@@ -1,0 +1,26 @@
+services:
+  mysql:
+    image: mysql:{{mysql_version}}
+    container_name: mysql
+    user: "{{mysql_user_id}}:{{mysql_group_id}}"
+    ports:
+      - "{{mysql_port}}:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD={{MYSQL_ROOT_PASSWORD}}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /opt/mysql/conf:/etc/mysql
+      - /opt/mysql/lib/mysql:/var/lib/mysql
+      - /opt/mysql/lib/mysql-files:/var/lib/mysql-files
+      - /opt/mysql/log:/var/log/mysql
+      - /opt/mysql/backup_shell:/opt/mysql/backup_shell
+      - /opt/mysql/mysql_backup:/opt/mysql/mysql_backup
+    privileged: true
+    deploy:
+      restart_policy:
+        condition: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "3"

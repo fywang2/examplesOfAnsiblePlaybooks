@@ -1,0 +1,29 @@
+---
+- name: install prepared mysql
+  shell: docker run --name mysql -d mysql:{{mysql_version}}
+
+- name: copy files from container to host(1)
+  shell: docker cp mysql:/etc/mysql/. /opt/mysql/conf
+
+- name: copy files from container to host(2)
+  shell: docker cp mysql:/var/lib/mysql/. /opt/mysql/lib/mysql
+
+- name: rm prepared mysql
+  shell: docker stop mysql && docker rm mysql
+
+- name: copy conf to remote server
+  copy:
+    src: "{{ item }}"
+    dest: /opt/mysql/
+    mode: 0755
+  loop:
+    - files/conf
+
+- name: change dir owner
+  shell: chown -R {{ mysql_user_id }}:{{ mysql_group_id }} /opt/mysql/
+
+- name: server-id setting
+  lineinfile:
+    dest: "/opt/mysql/conf/my.cnf"
+    regexp: "^server-id=1000"
+    line: "server-id={{ server_id }}"

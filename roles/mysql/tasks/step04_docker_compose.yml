@@ -1,0 +1,10 @@
+---
+- name: docker-compose file
+  template:
+    src: "docker-compose/docker-compose.yml.j2"
+    dest: "/opt/mysql/docker-compose/docker-compose.yml"
+
+- name: docker-compose up
+  command: 
+    cmd: sudo docker-compose -f docker-compose.yml up -d
+    chdir: /opt/mysql/docker-compose

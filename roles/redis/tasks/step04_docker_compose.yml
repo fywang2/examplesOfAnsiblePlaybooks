@@ -1,0 +1,14 @@
+---
+- name: docker-compose file
+  template:
+    src: "docker-compose/docker-compose.yml.j2"
+    dest: "/opt/redis/docker-compose-{{ item }}/docker-compose.yml"
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: docker-compose up
+  command: 
+    cmd: sudo docker-compose -f docker-compose.yml up -d
+    chdir: /opt/redis/docker-compose-{{ item }}
+  with_items:
+    - "{{ redis_cluster_port1 }}"

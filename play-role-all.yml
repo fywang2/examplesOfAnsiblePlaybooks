@@ -1,0 +1,16 @@
+# Grammer checking: sudo ansible-playbook -v -i host/hosts play-role-all.yml
+# Usage: sudo ansible-playbook -v -i host/hosts play-role-all.yml
+- hosts: docker-compose
+  remote_user: root
+  roles:
+    - role: docker-compose  
+
+- hosts: mysql
+  remote_user: root
+  roles:
+    - role: mysql  
+
+- hosts: redis
+  remote_user: root
+  roles:
+    - role: redis

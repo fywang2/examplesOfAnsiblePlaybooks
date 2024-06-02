@@ -1,0 +1,7 @@
+---
+# vars file for docker
+mysql_version: 8.4.0
+MYSQL_ROOT_PASSWORD: 1m2N@3b4V
+mysql_group_id: 1019
+mysql_user_id: 1019
+mysql_port: 8306

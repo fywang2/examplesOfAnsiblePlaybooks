@@ -1,0 +1,36 @@
+---
+- name: create redis docker compose file directory
+  file:
+    path: /opt/redis/docker-compose-{{ item }}
+    state: directory
+    mode: 0777
+    recurse: yes
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: create redis conf directory
+  file:
+    path: /opt/redis/conf-{{ item }}
+    state: directory
+    mode: 0777
+    recurse: yes
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: create redis data directory
+  file:
+    path: /opt/redis/data-{{ item }}
+    state: directory
+    mode: 0777
+    recurse: yes
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: create redis logs directory
+  file:
+    path: /opt/redis/logs-{{ item }}
+    state: directory
+    mode: 0777
+    recurse: yes
+  with_items:
+    - "{{ redis_cluster_port1 }}"

@@ -1,0 +1,18 @@
+# installation servers
+[docker-compose]
+192.168.10.12
+
+[mysql]
+192.168.10.12 server_id=1000
+
+[redis]
+192.168.10.12
+
+[all:children]
+docker-compose
+mysql
+redis
+
+[all:vars]
+ansible_ssh_user="root"
+ansible_ssh_port=22

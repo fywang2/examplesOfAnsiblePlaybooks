@@ -1,0 +1,108 @@
+---
+
+- name: copy redis.conf to remote server
+  copy: src=redis.conf
+    dest=/opt/redis/conf-{{ item }}/
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: bak redis.conf
+  shell: cp /opt/redis/conf-{{ item }}/redis.conf /opt/redis/conf-{{ item }}/redis.conf.bak.$(date +%Y%m%d%H%M%S)
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: redis setting (1)--bind
+  lineinfile:
+    dest: "/opt/redis/conf-{{ item }}/redis.conf"
+    regexp: "^bind 127.0.0.1 -::1"
+    line: "bind 0.0.0.0"
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: redis setting (1)--protected-mode
+  lineinfile:
+    dest: "/opt/redis/conf-{{ item }}/redis.conf"
+    regexp: "^protected-mode yes"
+    line: "protected-mode no"
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: redis setting (2)--port
+  lineinfile:
+    dest: "/opt/redis/conf-{{ item }}/redis.conf"
+    regexp: "^port 6379"
+    line: "port {{ item }}"
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: redis setting (3)--logfile
+  lineinfile:
+    dest: "/opt/redis/conf-{{ item }}/redis.conf"
+    regexp: '^logfile ""'
+    line: 'logfile "/usr/local/redis/logs/redis-server.log"'
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: redis setting (4)--requirepass
+  lineinfile:
+    dest: "/opt/redis/conf-{{ item }}/redis.conf"
+    regexp: "^# requirepass foobared"
+    line: "requirepass {{ redis_conf_requirepass }}"
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: redis setting (7)--appendonly
+  lineinfile:
+    dest: "/opt/redis/conf-{{ item }}/redis.conf"
+    regexp: "^appendonly no"
+    line: "appendonly yes"
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: redis setting (12)--syslog-enabled
+  lineinfile:
+    dest: "/opt/redis/conf-{{ item }}/redis.conf"
+    regexp: "^# syslog-enabled no"
+    line: "syslog-enabled yes"
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: redis setting (13)--timeout
+  lineinfile:
+    dest: "/opt/redis/conf-{{ item }}/redis.conf"
+    regexp: "^timeout 0"
+    line: "timeout 300"
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: redis setting (14)--rename-command CONFIG
+  lineinfile:
+    dest: "/opt/redis/conf-{{ item }}/redis.conf"
+    insertafter: "^# rename-command CONFIG b840fc02d524045429941cc15f59e41cb7be6c52"
+    line: "rename-command CONFIG CONFIG_SI"
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: redis setting (15)--rename-command SHUTDOWN
+  lineinfile:
+    dest: "/opt/redis/conf-{{ item }}/redis.conf"
+    insertafter: "^# rename-command CONFIG b840fc02d524045429941cc15f59e41cb7be6c52"
+    line: "rename-command SHUTDOWN SHUTDOWN_SI"
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: redis setting (15)--rename-command FLUSHDB
+  lineinfile:
+    dest: "/opt/redis/conf-{{ item }}/redis.conf"
+    insertafter: '^# rename-command CONFIG ""'
+    line: 'rename-command FLUSHDB ""'
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: redis setting (15)--rename-command FLUSHALL
+  lineinfile:
+    dest: "/opt/redis/conf-{{ item }}/redis.conf"
+    insertafter: '^# rename-command CONFIG ""'
+    line: 'rename-command FLUSHALL ""'
+  with_items:
+    - "{{ redis_cluster_port1 }}"

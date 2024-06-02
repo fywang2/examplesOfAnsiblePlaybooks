@@ -1,0 +1,11 @@
+---
+- name: firewall setting
+  firewalld:
+    zone: public # 设置zone
+    port: "{{ item }}" # 端口和协议
+    permanent: yes # 持久生效
+    immediate: yes # 现在就生效
+    state: enabled # 启用规则
+  with_items:
+    - 3306/tcp
+  ignore_errors: true

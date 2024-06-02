@@ -1,0 +1,16 @@
+---
+- name: stop redis
+  shell: docker stop redis-{{ item }}
+  ignore_errors: true
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: rm redis
+  shell: docker rm redis-{{ item }}
+  ignore_errors: true
+  with_items:
+    - "{{ redis_cluster_port1 }}"
+
+- name: rm dir
+  shell: rm -rf /opt/redis
+  ignore_errors: true

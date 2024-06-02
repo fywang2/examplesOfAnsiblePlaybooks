@@ -1,0 +1,11 @@
+---
+- name: firewall setting
+  firewalld:
+    zone: public # 设置zone
+    port: "{{ item }}/tcp" # 端口和协议
+    permanent: yes # 持久生效
+    immediate: yes # 现在就生效
+    state: enabled # 启用规则
+  ignore_errors: true
+  with_items:
+    - "{{ redis_cluster_port1 }}"

@@ -1,0 +1,23 @@
+--- 
+
+- name: create directory(1)
+  file:
+    path: /opt/mysql/{{ item }}
+    state: directory
+    mode: 0755
+    recurse: yes
+  with_items:
+    - conf
+    - log
+    - lib
+    - docker-compose
+
+- name: create directory(2)
+  file:
+    path: /opt/mysql/lib/{{ item }}
+    state: directory
+    mode: 0755
+    recurse: yes
+  with_items:
+    - mysql
+    - mysql-files

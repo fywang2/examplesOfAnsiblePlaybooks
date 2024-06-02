@@ -1,0 +1,5 @@
+---
+# redis conf vars
+redis_conf_requirepass: "p0o9I8.u7"
+redis_conf_masterauth: "{{redis_conf_requirepass}}"
+redis_cluster_port1: "8380"

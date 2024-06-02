@@ -1,0 +1,7 @@
+---
+# tasks file for redis 
+- include_tasks: step01_stop_redis.yml
+- include_tasks: step02_create_dir.yml
+- include_tasks: step03_redis_conf.yml
+- include_tasks: step04_docker_compose.yml
+- include_tasks: step05_firewall.yml

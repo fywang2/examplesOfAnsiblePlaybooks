@@ -1,0 +1,23 @@
+services:
+  mysql:
+    image: redis:7.2.5
+    container_name: redis-{{redis_cluster_port1}}
+    user: "0:0"
+    ports:
+      - "{{redis_cluster_port1}}:6379"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /opt/mysql/conf:/etc/mysql
+      - /opt/redis/conf-{{ redis_cluster_port1 }}/redis.conf:/usr/local/redis/redis.conf
+      - /opt/redis/data-{{ redis_cluster_port1 }}:/data
+      - /opt/redis/logs-{{ redis_cluster_port1 }}:/usr/local/redis/logs
+    privileged: true
+    deploy:
+      restart_policy:
+        condition: always
+    command: ["redis-server", "/usr/local/redis/redis.conf"]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "3"

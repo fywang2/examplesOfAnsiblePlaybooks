@@ -1,0 +1,18 @@
+---
+- name: create group
+  group:
+    gid: "{{ mysql_group_id }}"
+    name: mysql
+    state: present
+    system: false
+
+- name: create user
+  user:
+    uid: "{{ mysql_user_id }}"
+    name: mysql
+    group: "{{ mysql_group_id }}"
+    comment: Linux User
+    home: /home/mysql
+    shell: /bin/sh
+    state: present
+    system: false
